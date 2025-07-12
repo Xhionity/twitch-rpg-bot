@@ -1,0 +1,6 @@
+# created by virtualenv automatically
+.venv
+settings.py
+inf.txt
+players.json
+bot.log
