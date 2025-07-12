@@ -1042,6 +1042,32 @@ class RPGbot(commands.Bot):
         logging.info(f"{user} выбрал класс {class_name}")
         await ctx.send(f'{ctx.author.name}, ты выбрал класс: {class_name.capitalize()}.')
 
+    @commands.command(name='лечение')
+    async def cmd_full_heal(self, ctx):
+        """Полностью восстановить HP за 5 золота."""
+        user = ctx.author.name.lower()
+        if user not in self.players:
+            await ctx.send(f'{ctx.author.name}, у тебя нет персонажа.')
+            return
+
+        player = self.players[user]
+        cost = 5
+        max_hp = calculate_hp(player['level']) + self.get_equipment_bonuses(player)[2]
+
+        if player['current_hp'] >= max_hp:
+            await ctx.send(f'{ctx.author.name}, твоё здоровье и так полное!')
+            return
+
+        if player['gold'] < cost:
+            await ctx.send(f'{ctx.author.name}, у тебя недостаточно золота (нужно {cost}).')
+            return
+
+        player['gold'] -= cost
+        player['current_hp'] = max_hp
+        self.save_players()
+        logging.info(f"{user} полностью восстановил HP за {cost} золота")
+        await ctx.send(f'🩺 {ctx.author.name}, ты полностью восстановил HP за {cost} золота!')
+
 async def main():
     """Запуск бота."""
     bot = RPGbot()
