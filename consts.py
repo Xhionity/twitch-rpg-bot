@@ -144,20 +144,22 @@ ITEMS = {
     'Амулет удачи': {
         'slot': 'amulet',
         'effect': {'steal_chance_bonus': 0.05},
+        'attack_bonus': 0,
+        'hp_bonus': 0,
         'price': 200
     },
-    'Мешок с чем-то': {
-        'slot': 'pet',
-        'attack_bonus': (2, 3),
-        'hp_bonus': 5,
-        'price': 3000
-    },
-    'Проклятое яйцо': {
-        'slot': 'pet',
-        'attack_bonus': (8, 10),
-        'hp_bonus': -5,
-        'price': 50000
-    },
+    # 'Мешок с чем-то': {
+    #     'slot': 'pet',
+    #     'attack_bonus': (2, 3),
+    #     'hp_bonus': 5,
+    #     'price': 3000
+    # },
+    # 'Проклятое яйцо': {
+    #     'slot': 'pet',
+    #     'attack_bonus': (8, 10),
+    #     'hp_bonus': -5,
+    #     'price': 50000
+    # },
     'Драконий клык': {
         'slot': 'weapon',
         'attack_bonus': (8, 10),
@@ -186,27 +188,32 @@ BLACK_MARKET_ITEMS = [
         'description': 'Одноразовое зелье, восстанавливает 20 HP.'
     },
     {
+        'name': 'Сочная жопка @darkestreklin',
+        'price': 5000,
+        'description': 'А по названию не понятно?'
+    },
+    {
         'name': 'Амулет удачи',
         'type': 'amulet',
         'price': 300,
         'description': 'Увеличивает шанс успешной кражи на 5%.'
     },
-    {
-        'name': 'Мешок с чем-то',
-        'type': 'pet',
-        'price': 4000,
-        'description': 'Таинственный мешок, даёт +5 HP и +2-3 урона.'
-    },
-    {
-        'name': 'Проклятое яйцо',
-        'type': 'pet',
-        'price': 60000,
-        'description': 'Питомец с проклятьем, даёт +8-10 урон, но снижает HP на 5.'
-    },
-    {
-        'name': 'Драконий клык',
-        'type': 'weapon',
-        'price': 600,
-        'description': 'Редкое оружие, выкованное из клыка дракона (+8-10).'
-    }
+    # {
+    #     'name': 'Мешок с чем-то',
+    #     'type': 'pet',
+    #     'price': 4000,
+    #     'description': 'Таинственный мешок, даёт +5 HP и +2-3 урона.'
+    # },
+    # {
+    #     'name': 'Проклятое яйцо',
+    #     'type': 'pet',
+    #     'price': 600000,
+    #     'description': 'Питомец с проклятьем, даёт +8-10 урон, но снижает HP на 5.'
+    # },
+    # {
+    #     'name': 'Драконий клык',
+    #     'type': 'weapon',
+    #     'price': 600000,
+    #     'description': 'Редкое оружие, выкованное из клыка дракона (+8-10).'
+    # }
 ]
