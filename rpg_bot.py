@@ -67,7 +67,7 @@ class RPGbot(commands.Bot):
                     default_player = {
                         'level': 1,
                         'xp': 0,
-                        'gold': 0,
+                        'gold': 15,
                         'inventory': [],
                         'equipment': {'weapon': None, 'armor': None, 'helmet': None, 'pet': None, 'amulet': None},
                         'last_xp_time': 0,
@@ -1042,7 +1042,7 @@ class RPGbot(commands.Bot):
         logging.info(f"{user} выбрал класс {class_name}")
         await ctx.send(f'{ctx.author.name}, ты выбрал класс: {class_name.capitalize()}.')
 
-    @commands.command(name='лечение')
+    @commands.command(name='отдых')
     async def cmd_full_heal(self, ctx):
         """Полностью восстановить HP за 5 золота."""
         user = ctx.author.name.lower()
@@ -1068,10 +1068,59 @@ class RPGbot(commands.Bot):
         logging.info(f"{user} полностью восстановил HP за {cost} золота")
         await ctx.send(f'🩺 {ctx.author.name}, ты полностью восстановил HP за {cost} золота!')
 
-async def main():
-    """Запуск бота."""
-    bot = RPGbot()
-    await bot.start()
+    @commands.command(name='подарить')
+    async def cmd_gift(self, ctx):
+        """Подарить любой предмет из инвентаря другому игроку"""
+        user = ctx.author.name.lower()
+        player = self.players[user]
+        parts = ctx.message.content.strip().split(maxsplit=2)
 
-if __name__ == "__main__":
-    asyncio.run(main())
+        if user not in self.players:
+            await ctx.send(f'{ctx.author.name}, у тебя нет персонажа.')
+            return
+
+        if len(parts) != 3:
+            await ctx.send(f'@{user}, формат отправки подарка: !подарок <имя персонажа> <название предмета из инвентаря>')
+            return
+
+        if len(parts) == 3:
+            target = parts[1].lstrip('@').lower()
+            item = parts[2].capitalize()
+            item_slpit = item.split()
+            if target not in self.players:
+                await ctx.send(f'@{user}, {target} должен иметь персонажа!')
+                return
+            if item_slpit[0] == 'Золото':
+                if item_slpit[1].isalpha():
+                    await ctx.send(f'@{user}, ты хоть сам понял что хочешь?)')
+                    return
+                if int(item_slpit[1]) <= player['gold']:
+                    self.players[target]['gold'] += int(item_slpit[1])
+                    player['gold'] -= int(item_slpit[1])
+                    self.save_players()
+                    await ctx.send(f'@{user} подарил @{target} {int(item_slpit[1])} золотых монет!')
+                    return
+                elif int(item_slpit[1]) > player['gold']:
+                    await ctx.send(f'@{user}, у тебя нет столько золота!')
+                    return
+
+            if item in player['inventory']:
+                self.players[target]['inventory'].append(item)
+                player['inventory'].remove(item)
+                self.save_players()
+                await ctx.send(f'@{user} успешно передал @{target} предмет {item}')
+                return
+
+            if item not in player['inventory']:
+                await ctx.send(f'@{user}, у тебя нет такого предмета в инвентаре!')
+                return
+
+# async def main():
+#     """Запуск бота."""
+#     bot = RPGbot()
+#     await bot.start()
+#
+# if __name__ == "__main__":
+#     asyncio.run(main())
+bot = RPGbot()
+bot.run()
