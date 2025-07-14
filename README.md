@@ -16,6 +16,7 @@ PvP-дуэли с возможностью ставок.
 
 Клонируйте репозиторий:
 git clone https://github.com/Xhionity/twitch-rpg-bot.git
+
 cd twitch-rpg-bot
 
 
