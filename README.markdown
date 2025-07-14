@@ -25,7 +25,7 @@ Twitch RPG Bot — интерактивный бот для Twitch-канала 
 
 3. Создайте `settings.py`:
    ```python
-   TOKEN = 'your_twitch_oauth_token'  # Получите на https://twitchapps.com/tmi/
+   TOKEN = 'your_twitch_oauth_token'  # Получите на https://dev.twitch.tv/
    CHANNEL = 'xhionity'
    SAVE_FILE = 'players.json'
    ```
