@@ -487,7 +487,7 @@ class RPGbot(commands.Bot):
         )
         base = MONSTERS[monster_name]
         level = player['level']
-        scale_factor = 1 + (level - 1) * 0.25
+        scale_factor = 1 + (level - 1) * 0.1
         monster_hp = int(base['base_hp'] * scale_factor)
         monster_attack = int(base['base_attack'] * scale_factor)
 
@@ -903,7 +903,7 @@ class RPGbot(commands.Bot):
 
         player = self.players[user]
         now = time.time()
-        if not await self.check_cooldown(player, 'steal_time_unteal', 300, ctx):
+        if not await self.check_cooldown(player, 'steal_time_unteal', 600, ctx):
             return
 
         if item_name.lower() not in [i.lower() for i in self.players[target]['inventory']]:
@@ -921,7 +921,7 @@ class RPGbot(commands.Bot):
             logging.info(f"{user} украл {item_name} у {target}")
         else:
             player['prison'] = True
-            player['prison_until'] = now + 300
+            player['prison_until'] = now + 600
             await ctx.send(f'@{ctx.author.name}, кража не удалась, тебя схватила стража! Ты в тюрьме на 5 минут.')
             logging.info(f"{user} провалил кражу, отправлен в тюрьму")
         self.save_players()
@@ -1114,6 +1114,31 @@ class RPGbot(commands.Bot):
             if item not in player['inventory']:
                 await ctx.send(f'@{user}, у тебя нет такого предмета в инвентаре!')
                 return
+            
+    @commands.command(name='команды')
+    async def cmd_commands(self, ctx):
+        user = ctx.author.name.lower()
+
+        await ctx.send(f'@{user} для просмотра команд иди в описание канала!')
+        return
+
+    @commands.command(name='милостыня')
+    async def cmd_alms(self, ctx):
+        now = time.time()
+        user = ctx.author.name.lower() # тута имя автора сообщения
+        player = self.players[user] # тута вся стата перса
+        gold = [0, 1, 2]
+        gold_given = random.choice(gold)
+
+        if player['alms_unteal'] >= now:
+            await ctx.send(f'@{user}, шел бы ты, пока не люлей не дали! До следующей попытки {int(player['alms_unteal'] - now)} секунд.')
+            return
+
+        player['alms_unteal'] = now + 300
+        player['gold'] += gold_given
+        self.save_players()
+        await ctx.send(f'@{user}, тебе дали {gold_given} монет/у, благодари господа!')
+        return
 
 # async def main():
 #     """Запуск бота."""
@@ -1122,5 +1147,6 @@ class RPGbot(commands.Bot):
 #
 # if __name__ == "__main__":
 #     asyncio.run(main())
+
 bot = RPGbot()
 bot.run()
