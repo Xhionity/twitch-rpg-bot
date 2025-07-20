@@ -138,7 +138,7 @@ ITEMS = {
     },
     'Зелье лечения': {
         'slot': 'consumable',
-        'effect': {'heal': 20},
+        'effect': {'heal': 200},
         'price': 50
     },
     'Амулет удачи': {
