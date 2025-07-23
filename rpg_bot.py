@@ -1129,9 +1129,12 @@ class RPGbot(commands.Bot):
         player = self.players[user] # тута вся стата перса
         gold = [0, 1, 2]
         gold_given = random.choice(gold)
+        if 'alms_unteal' not in player:
+
+            player['alms_unteal'] = 0
 
         if player['alms_unteal'] >= now:
-            await ctx.send(f'@{user}, шел бы ты, пока не люлей не дали! До следующей попытки {int(player['alms_unteal'] - now)} секунд.')
+            await ctx.send(f'@{user}, шел бы ты, пока люлей не дали! До следующей попытки {int(player['alms_unteal'] - now)} секунд.')
             return
 
         player['alms_unteal'] = now + 300
@@ -1140,13 +1143,6 @@ class RPGbot(commands.Bot):
         await ctx.send(f'@{user}, тебе дали {gold_given} монет/у, благодари господа!')
         return
 
-# async def main():
-#     """Запуск бота."""
-#     bot = RPGbot()
-#     await bot.start()
-#
-# if __name__ == "__main__":
-#     asyncio.run(main())
 
 bot = RPGbot()
 bot.run()
